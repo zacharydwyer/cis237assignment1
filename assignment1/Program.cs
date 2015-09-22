@@ -10,6 +10,10 @@ namespace assignment1
     {
         static void Main(string[] args)
         {
+            Flags.wineListLoaded = false;
+
+            UserInterface.initializeConsoleWindow("CIS 237 | ASSIGNMENT 1 | ZACHARY DWYER", ConsoleColor.Black, ConsoleColor.White);
+            UserInterface.printMainMenu();
         }
     }
 }
