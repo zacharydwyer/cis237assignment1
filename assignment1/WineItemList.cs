@@ -33,6 +33,10 @@ namespace assignment1
             // If this item won't fit in the array, throw an exception.
             // Example, if we're trying to fit a WineItem into position 12, but there's only 11 spaces in the wineItems array, throw an exception
             // (-1 on the wineItems.Length value since its maximum index is 1 less than its length)
+
+            Console.WriteLine("Adding one to list.");
+            Console.ReadKey(true);
+
             if (nextArrayPosition > (wineItems.Length - 1))
             {
                 throw new System.Exception("The list is full.");
@@ -45,7 +49,7 @@ namespace assignment1
         }
 
         // Return the WineItem list
-        public WineItem[] List()
+        public WineItem[] getList()
         {
             return this.wineItems;
         } 

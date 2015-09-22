@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace assignment1
 {
-    // This is where all of the flags that multiple classes need throughout the whole program
-    // I thought there would be more here in the end but it turns out there wasn't
-    static class Flags
+    static class Globals
     {
         public static bool wineListLoaded;
+        public static WineItemList wineItemList;
+        public static CSVProcessor myCSVProcessor;
     }
 }

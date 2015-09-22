@@ -20,7 +20,7 @@ namespace assignment1
         // _______***** note to self GET RID OF THIS IF YOU NEVER USE IT
         private static string currentStatus = "Ready";
 
-        // Set the title, color, etc. of console window
+        /* INITIALIZE CONSOLE WINDOW */
         public static void initializeConsoleWindow(string windowTitle, ConsoleColor backgroundColor, ConsoleColor foregroundColor)
         {
             Console.Title = windowTitle;                                        // Set title
@@ -35,8 +35,7 @@ namespace assignment1
         // 
         public static void printMainMenu()
         {
-            // Get the cursor ready
-            Console.SetCursorPosition(1, 1);     
+            resetScreen();    
 
             // Print the menu
             Console.WriteLine("MAIN MENU" + Environment.NewLine + " ------------------------------" + 
@@ -72,35 +71,57 @@ namespace assignment1
             handleKeyOption(hitKey);
         }
 
-        // Handles the characters 1 through 5
-        // Called from printMainMenu
+        /* HANDLE KEY PRESSED BY USER (IN THE FORM OF A CHARACTER) */
         private static void handleKeyOption(char key)
         {
-            Console.Clear();
-            Console.WriteLine("You're done son");
-            Console.ReadKey(true);
+            switch (key)
+            {
+                case '1':
+                    Globals.myCSVProcessor.processFile();
+                    resetScreen();
+                    Console.WriteLine("File successfully read!");
+                    setStatus("Press any key to continue");
+                    Console.ReadKey(true);
+                    break;
+                case '2':
+                    printList();
+                    break;
+                case '3':
+                    printFatalError("Has not been created yet.");
+                    Console.ReadKey(true);
+                    break;
+                case '4':
+                    printFatalError("Has not been created yet.");
+                    Console.ReadKey(true);
+                    break;
+                case '5':
+                    Environment.Exit(0);
+                    break;
+            }
         }
 
-        // Set the status of the program
+        /* USED TO UPDATE PROGRAM STATUS */
         private static void setStatus(string status)
         {
             Console.SetCursorPosition(0, 21);           // Set position of cursor
             Console.WriteLine(" ----------------------");           
-            ClearCurrentConsoleLine();                  // Clears the existing status
+            clearCurrentConsoleLine();                  // Clears the existing status
             Console.WriteLine(" " + status);            // Writes a new status
             Console.WriteLine(" ----------------------");
         }
 
+        /* USED TO UPDATE PROGRAM STATUS, WITH A CUSTOM STARTING ROW */
         private static void setStatus(string status, int startingRow)
         {
-            Console.SetCursorPosition(0, 21);           // Set position of cursor
+            Console.SetCursorPosition(0, startingRow);           // Set position of cursor
             Console.WriteLine(" ----------------------");
-            ClearCurrentConsoleLine();                  // Clears the existing status
-            Console.WriteLine(" " + status);            // Writes a new status
+            clearCurrentConsoleLine();                          // Clears the existing status
+            Console.WriteLine(" " + status);                    // Writes a new status
             Console.WriteLine(" ----------------------");
         }
 
-        public static void ClearCurrentConsoleLine()
+        /* CLEARS THE ENTIRE LINE THAT THE CURSOR IS CURRENT AT */
+        public static void clearCurrentConsoleLine()
         {
             int currentLineCursor = Console.CursorTop;
             Console.SetCursorPosition(0, Console.CursorTop);
@@ -108,17 +129,64 @@ namespace assignment1
             Console.SetCursorPosition(0, currentLineCursor);
         }
 
-
-
-        // GOD LEFT ME UNFINISHED
-        // Prints a WineItemList out. 
-        public static void printList(WineItemList wineItemList, int linesAtATime)
+        /* PRINT HUGE ERROR THAT WILL STOP THE PROGRAM */
+        public static void printFatalError(string errorText)
         {
-            // Check if first item is empty/null (means the wineItemList hasn't been added to yet)
-            if (wineItemList.List()[0].ID == String.Empty || wineItemList.List()[0].ID == null)
+            // doesn't actually stop the program, just takes care of the looks
+            Console.BackgroundColor = ConsoleColor.DarkRed;
+            Console.ForegroundColor = ConsoleColor.White; 
+            Console.Clear();
+            Console.SetCursorPosition(1, 11);
+            Console.WriteLine(errorText);
+        }
+
+        /* PRINT A LIST OF WINEITEMS */ 
+        public static void printList()
+        {
+            // Check if the list was loaded
+            if (Globals.wineListLoaded == false)
             {
-                
+                resetScreen();
+                Console.WriteLine("No WineItems have been added to the list.");
+                setStatus("Press any key to continue");
+                Console.ReadKey(true);
+                printMainMenu();
             }
+            else
+            {
+                int linesCounter = 0;
+
+                resetScreen();
+
+                foreach (WineItem wineItem in Globals.wineItemList.getList())
+                {
+                    if (linesCounter > 18) {
+                        setStatus("Press any key to continue printing list.");  // Prompt
+                        Console.ReadKey(true);                                  // Let user hit a key to continue
+                        linesCounter = 0;                                       // Reset number of lines printed
+                        resetScreen();                                          // Reset the screen
+                    }
+
+                    // Print a line
+                    Console.WriteLine(" " + wineItem.ID + ", " + wineItem.Description + ", " +
+                        wineItem.Pack);
+
+                    // Increment lines counter
+                    linesCounter++;
+                }
+
+                /* DONE PRINTING LIST */
+                setStatus("Press any key to go back to the main menu.");
+                Console.ReadKey(true);
+                printMainMenu();
+            }
+        }
+
+        /* GET SCREEN READY FOR A NEW STANDARD MENU */
+        private static void resetScreen()
+        {
+            Console.SetCursorPosition(1, 1);
+            Console.Clear();
         }
     }
 }
