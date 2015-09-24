@@ -3,53 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;           // For Debugging
 
 namespace assignment1
 {
-    // Class that holds a collection of WineItems that can be added to and retrieved.
     class WineItemList
     {
-        private WineItem[] wineItems;           // This is where WineItems are stored
+        private WineItem[] wineItems;           
+        private int nextArrayPosition = 0;      // Where to put the next WineItem when added
 
-        private int nextArrayPosition = 0;      // Marks the next address of the wineItems array to put a new WineItem; incremented every time one is added
-
-        // When this list is created, before being instantiated it needs to know how big the list is
-        public WineItemList(int numberOfItems)
+        public WineItemList(int initialNumberOfItems)  // When this list is created, before being instantiated it needs to know how big the list is
         {
-            // Throw an exception if the amount is less than 1 (Arrays cannot have 0 size)
-            if (numberOfItems < 1)
+            if (initialNumberOfItems < 1)              // Throw an exception if the declared array size is less than 1 (Arrays cannot have 0 size)
             {
                 throw new System.ArgumentException("Parameter cannot be less than 1");
             }
             else
             {
-                wineItems = new WineItem[numberOfItems];
+                wineItems = new WineItem[initialNumberOfItems];
+                Debug.WriteLine("WINEITEMLIST: A WineItemList with " + wineItems.Length + " items was created.");
             }
         }
 
-        // This is the method of which you add WineItems to the list
+        /* ADD WINE ITEM TO THE LIST */
         public void Add(WineItem wineItem) {
 
             // If this item won't fit in the array, throw an exception.
             // Example, if we're trying to fit a WineItem into position 12, but there's only 11 spaces in the wineItems array, throw an exception
             // (-1 on the wineItems.Length value since its maximum index is 1 less than its length)
 
-            Console.WriteLine("Adding one to list.");
-            Console.ReadKey(true);
+            if (nextArrayPosition > (wineItems.Length - 1))     // Is the next array position more than the last index of the wineItems array?
+            {
+                // Make the list larger
+                WineItem[] newWineItemList = new WineItem[(wineItems.Length + 1)];                  // Make a wineItemList the size of the old one, but one more larger.
 
-            if (nextArrayPosition > (wineItems.Length - 1))
-            {
-                throw new System.Exception("The list is full.");
+                for (int index = 0; index < wineItems.Length; index++) {                            // Copy all of the wineItems into the new wineItems array
+                    newWineItemList[index] = wineItems[index];
+                }
+
+                wineItems = newWineItemList;                                                        // Give the old wineItems array a new, bigger wineItemList
             }
-            else
-            {
-                wineItems[nextArrayPosition] = wineItem;        // Add the given WineItem to the wineItems array
-                nextArrayPosition++;                            // Increment the array so it's ready for the next time a WineItem is made
-            }
+
+            wineItems[nextArrayPosition] = wineItem;        // Add the given WineItem to the wineItems array
+            nextArrayPosition++;                            // Increment the array so it's ready for the next time a WineItem is added
+            Debug.WriteLine("WineItem added: " + wineItem.ToString());
         }
 
-        // Return the WineItem list
-        public WineItem[] getList()
+        /* GET THE LIST */
+        public WineItem[] GetList()
         {
             return this.wineItems;
         } 
