@@ -2,6 +2,8 @@
 
 ## Author
 
+Zachary Dwyer
+
 ## Description
 
 Create a C# console program to work with a .CSV wine list. The program should continually run until the user decides to exit (entering a certain character on the keyboard). The program should allow the following functionality:
@@ -52,6 +54,14 @@ Suggestion/Hints:
 
 ## Outside Resources Used
 
+How to use Console.ReadKey when hitting Enter wasn't working to advance the command prompt: http://stackoverflow.com/questions/3447646/console-readline-function-is-not-working
+
+Used a snippet of code for ClearCurrentConsoleLine(): http://stackoverflow.com/questions/8946808/can-console-clear-be-used-to-only-clear-a-line-instead-of-whole-console
+
+Used to find out how to set a relative file path: http://stackoverflow.com/questions/12335618/file-path-for-project-files
+
 ## Known Problems, Issues, And/Or Errors in the Program
+
+A few spacing problems, doesn't tell you you need to load the file before you give it the amount of lines to print.
 
 
